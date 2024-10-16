@@ -35,6 +35,7 @@ export default [
       ],
       semi: ["error", "always", { omitLastInOneLineBlock: false }],
       quotes: ["error", "double"],
+      indent: ["error", 2],
     },
   },
 ];
