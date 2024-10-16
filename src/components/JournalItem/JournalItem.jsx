@@ -1,5 +1,4 @@
 import "./JournalItem.css";
-import PropTypes from "prop-types";
 
 function JournalItem({ title, date, text }) {
   return (
@@ -12,10 +11,5 @@ function JournalItem({ title, date, text }) {
     </div>
   );
 }
-JournalItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  date: PropTypes.instanceOf(Date).isRequired,
-  text: PropTypes.string.isRequired,
-};
 
 export default JournalItem;
