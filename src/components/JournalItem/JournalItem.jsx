@@ -1,10 +1,6 @@
 import "./JournalItem.css";
 
-function JournalItem() {
-  const title = "Journal Entry";
-  const date = new Date();
-  const text = "This is a journal entry";
-
+function JournalItem({ title, date, text }) {
   return (
     <div className="journal-item">
       <h2 className="journal-item__header">{title}</h2>
