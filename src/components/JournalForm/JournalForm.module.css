@@ -1,12 +1,12 @@
-.journal-form {
+.journalForm {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
 .invalid {
-  border: 1px solid red;
-  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid red !important;
+  background: rgba(255, 0, 0, 0.1) !important;
 }
 
 .input {

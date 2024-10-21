@@ -1,4 +1,5 @@
 import { useState } from "react";
+import classnames from "classnames";
 import Button from "../Button/Button";
 import styles from "./JournalForm.module.css";
 
@@ -39,26 +40,32 @@ function JournalForm({ onSubmit }) {
   };
 
   return (
-    <form className={styles["journal-form"]} onSubmit={onFormSubmitted}>
+    <form className={styles.journalForm} onSubmit={onFormSubmitted}>
       <input
         type="text"
         name="title"
         placeholder="Title"
-        className={styles.input + formValidState.isTitleValid ? "" : " invalid"}
+        className={classnames(styles.input, {
+          [styles.invalid]: !formValidState.isTitleValid,
+        })}
         required
       />
       <input
         type="date"
         name="date"
         placeholder="Date"
-        className={styles.input + formValidState.isDateValid ? "" : " invalid"}
+        className={classnames(styles.input, {
+          [styles.invalid]: !formValidState.isDateValid,
+        })}
         required
       />
       <input
         type="text"
         name="tag"
         placeholder="Tag"
-        className={styles.input + formValidState.isTagValid ? "" : " invalid"}
+        className={classnames(styles.input, {
+          [styles.invalid]: !formValidState.isTagValid,
+        })}
         required
       />
       <textarea
@@ -66,7 +73,9 @@ function JournalForm({ onSubmit }) {
         placeholder="What's on your mind?"
         cols="30"
         rows="10"
-        className={styles.input + formValidState.isTextValid ? "" : " invalid"}
+        className={classnames(styles.input, {
+          [styles.invalid]: !formValidState.isTextValid,
+        })}
         required
       ></textarea>
       <Button type="submit">Save</Button>
