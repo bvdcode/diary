@@ -24,9 +24,8 @@ function App() {
       <Button />
       <CardButton>New memo</CardButton>
       {data.map((entry, index) => (
-        <CardButton>
+        <CardButton key={index}>
           <JournalItem
-            key={index}
             title={entry.title}
             date={entry.date}
             text={entry.text}
