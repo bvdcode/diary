@@ -1,6 +1,6 @@
-import "./JournalForm.css";
 import { useState } from "react";
 import Button from "../Button/Button";
+import styles from "./JournalForm.module.css";
 
 function JournalForm({ onSubmit }) {
   const [formValidState, setFormValidState] = useState({
@@ -13,7 +13,6 @@ function JournalForm({ onSubmit }) {
   const isFormValid = (formProps) => {
     const { title, date, tag, text } = formProps;
     const isTitleValid = title.trim().length > 0;
-    console.log("date :>> ", date);
     const isDateValid = Date.parse(date) > 0;
     const isTagValid = tag.trim().length > 0;
     const isTextValid = text.trim().length > 0;
@@ -40,31 +39,26 @@ function JournalForm({ onSubmit }) {
   };
 
   return (
-    <form className="journal-form" onSubmit={onFormSubmitted}>
+    <form className={styles["journal-form"]} onSubmit={onFormSubmitted}>
       <input
         type="text"
         name="title"
         placeholder="Title"
-        style={{
-          border: formValidState.isTitleValid ? "none" : "1px solid red",
-        }}
+        className={styles.input + formValidState.isTitleValid ? "" : " invalid"}
         required
       />
       <input
         type="date"
         name="date"
-        style={{
-          border: formValidState.isDateValid ? "none" : "1px solid red",
-        }}
+        placeholder="Date"
+        className={styles.input + formValidState.isDateValid ? "" : " invalid"}
         required
       />
       <input
         type="text"
         name="tag"
         placeholder="Tag"
-        style={{
-          border: formValidState.isTagValid ? "none" : "1px solid red",
-        }}
+        className={styles.input + formValidState.isTagValid ? "" : " invalid"}
         required
       />
       <textarea
@@ -72,9 +66,7 @@ function JournalForm({ onSubmit }) {
         placeholder="What's on your mind?"
         cols="30"
         rows="10"
-        style={{
-          border: formValidState.isTextValid ? "none" : "1px solid red",
-        }}
+        className={styles.input + formValidState.isTextValid ? "" : " invalid"}
         required
       ></textarea>
       <Button type="submit">Save</Button>
