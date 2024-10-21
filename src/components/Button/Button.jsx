@@ -1,7 +1,7 @@
 import "./Button.css";
 
-function Button() {
-  return <button className="button accent">Click me!</button>;
+function Button({ children }) {
+  return <button className="button accent">{children}</button>;
 }
 
 export default Button;

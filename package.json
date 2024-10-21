@@ -1,7 +1,7 @@
 {
   "name": "diary",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "homepage": "https://diary.belov.us",
   "scripts": {
@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist --cname=diary.belov.us"
   },
   "dependencies": {
     "react": "^18.3.1",
