@@ -3,3 +3,20 @@
   flex-direction: column;
   gap: 30px;
 }
+
+.journal-list__empty {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-up-icon {
+  width: 30px;
+  height: 60px;
+  padding-left: 15px;
+}

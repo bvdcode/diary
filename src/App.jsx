@@ -3,29 +3,18 @@ import { useState } from "react";
 import Body from "./layouts/Body/Body";
 import Header from "./components/Header/Header";
 import LeftPanel from "./layouts/LeftPanel/LeftPanel";
-import CardButton from "./components/CardButton/CardButton";
-import JournalItem from "./components/JournalItem/JournalItem";
 import JournalList from "./components/JournalList/JournalList";
-import JournalAddButton from "./components/JournalAddButton/JournalAddButton";
 import JournalForm from "./components/JournalForm/JournalForm";
+import JournalAddButton from "./components/JournalAddButton/JournalAddButton";
 
 function App() {
   const INITIAL_DATA = [
-    {
-      title: "Journal Entry",
-      date: new Date(),
-      text: "This is a journal entry",
-    },
-    {
-      title: "Journal Entry 2",
-      date: new Date(),
-      text: "This is another journal entry",
-    },
   ];
 
   const [items, setItems] = useState(INITIAL_DATA);
 
   const addItem = (item) => {
+    item.id = items.length > 0 ? Math.max(...items.map((i) => i.id)) + 1 : 1;
     setItems((oldItems) => [...oldItems, item]);
   };
 
@@ -36,17 +25,7 @@ function App() {
           <Header />
           <JournalAddButton />
         </div>
-        <JournalList>
-          {items.map((entry, index) => (
-            <CardButton key={index}>
-              <JournalItem
-                title={entry.title}
-                date={entry.date}
-                text={entry.text}
-              />
-            </CardButton>
-          ))}
-        </JournalList>
+        <JournalList items={items}></JournalList>
       </LeftPanel>
       <Body>
         <JournalForm onSubmit={addItem} />
