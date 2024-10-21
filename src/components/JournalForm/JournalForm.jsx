@@ -41,33 +41,49 @@ function JournalForm({ onSubmit }) {
 
   return (
     <form className={styles.journalForm} onSubmit={onFormSubmitted}>
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        className={classnames(styles.input, {
-          [styles.invalid]: !formValidState.isTitleValid,
-        })}
-        required
-      />
-      <input
-        type="date"
-        name="date"
-        placeholder="Date"
-        className={classnames(styles.input, {
-          [styles.invalid]: !formValidState.isDateValid,
-        })}
-        required
-      />
-      <input
-        type="text"
-        name="tag"
-        placeholder="Tag"
-        className={classnames(styles.input, {
-          [styles.invalid]: !formValidState.isTagValid,
-        })}
-        required
-      />
+      <div className={styles.formRow}>
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          className={classnames(styles.input, {
+            [styles.invalid]: !formValidState.isTitleValid,
+          })}
+          required
+        />
+      </div>
+      <div className={styles.formRow}>
+        <label htmlFor="date" className={styles.formLabel}>
+          <img src="/calendar.svg" alt="Calendar" />
+          <span>Date</span>
+        </label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          placeholder="Date"
+          className={classnames(styles.input, {
+            [styles.invalid]: !formValidState.isDateValid,
+          })}
+          required
+        />
+      </div>
+      <div className={styles.formRow}>
+        <label htmlFor="tag" className={styles.formLabel}>
+          <img src="/folder.svg" alt="Tag" />
+          <span>Tag</span>
+        </label>
+        <input
+          type="text"
+          id="tag"
+          name="tag"
+          placeholder="Tag"
+          className={classnames(styles.input, {
+            [styles.invalid]: !formValidState.isTagValid,
+          })}
+          required
+        />
+      </div>
       <textarea
         name="text"
         placeholder="What's on your mind?"
