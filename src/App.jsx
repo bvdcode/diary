@@ -24,10 +24,11 @@ function App() {
   return (
     <div className="app">
       <LeftPanel>
-        <Header />
-        <JournalAddButton />
+        <div className="list-header">
+          <Header />
+          <JournalAddButton />
+        </div>
         <JournalList>
-          <CardButton>New memo</CardButton>
           {data.map((entry, index) => (
             <CardButton key={index}>
               <JournalItem
@@ -39,7 +40,9 @@ function App() {
           ))}
         </JournalList>
       </LeftPanel>
-      <Body>Body</Body>
+      <Body>
+        
+      </Body>
     </div>
   );
 }
