@@ -1,37 +1,29 @@
-import { useState } from "react";
+import { useEffect, useReducer } from "react";
 import classnames from "classnames";
 import Button from "../Button/Button";
 import styles from "./JournalForm.module.css";
+import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 
 function JournalForm({ onSubmit }) {
-  const [formValidState, setFormValidState] = useState({
-    isTitleValid: true,
-    isDateValid: true,
-    isTagValid: true,
-    isTextValid: true,
-  });
+  const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
+  const { isValid, isFormValid } = formState;
 
-  const isFormValid = (formProps) => {
-    const { title, date, tag, text } = formProps;
-    const isTitleValid = title.trim().length > 0;
-    const isDateValid = Date.parse(date) > 0;
-    const isTagValid = tag.trim().length > 0;
-    const isTextValid = text.trim().length > 0;
-    setFormValidState({
-      isTitleValid,
-      isDateValid,
-      isTagValid,
-      isTextValid,
-    });
-    return isTitleValid && isDateValid && isTagValid && isTextValid;
-  };
+  useEffect(() => {
+    if (!isFormValid) {
+      const timeout = setTimeout(() => {
+        console.log("Resetting validation");
+        dispatchForm({ type: "RESET_VALIDATION" });
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isFormValid]);
 
   const onFormSubmitted = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formProps = Object.fromEntries(formData);
-    const isValid = event.target.checkValidity() && isFormValid(formProps);
-    if (!isValid) {
+    dispatchForm({ type: "SUBMIT", payload: formProps });
+    if (!isFormValid) {
       return;
     }
     formProps.date = new Date(formProps.date);
@@ -47,7 +39,7 @@ function JournalForm({ onSubmit }) {
           name="title"
           placeholder="Title"
           className={classnames(styles.input, {
-            [styles.invalid]: !formValidState.isTitleValid,
+            [styles.invalid]: !isValid.title,
           })}
           required
         />
@@ -63,8 +55,9 @@ function JournalForm({ onSubmit }) {
           name="date"
           placeholder="Date"
           className={classnames(styles.input, {
-            [styles.invalid]: !formValidState.isDateValid,
+            [styles.invalid]: !isValid.date,
           })}
+          defaultValue={new Date().toISOString().split("T")[0]}
           required
         />
       </div>
@@ -79,18 +72,19 @@ function JournalForm({ onSubmit }) {
           name="tag"
           placeholder="Tag"
           className={classnames(styles.input, {
-            [styles.invalid]: !formValidState.isTagValid,
+            [styles.invalid]: !isValid.tag,
           })}
           required
         />
       </div>
       <textarea
         name="text"
-        placeholder="What's on your mind?"
+        placeholder={JSON.stringify(formState)}
+        // placeholder="What's on your mind?"
         cols="30"
         rows="10"
         className={classnames(styles.input, {
-          [styles.invalid]: !formValidState.isTextValid,
+          [styles.invalid]: !isValid.text,
         })}
         required
       ></textarea>
