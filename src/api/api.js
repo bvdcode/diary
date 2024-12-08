@@ -22,14 +22,12 @@ class RemoteApi {
     const data = await response.json();
     if (data) {
       data.forEach((item) => {
-        if (item.date) {
-          item.date = new Date(item.date);
-        } else {
+        if (!item.date) {
           item.date = new Date(2000, 0, 1);
         }
       });
     }
-    return data;
+    return data ?? [];
   }
 
   static async saveData(items) {
