@@ -1,3 +1,4 @@
+import Input from "../Input/Input";
 import classnames from "classnames";
 import Button from "../Button/Button";
 import styles from "./JournalForm.module.css";
@@ -55,16 +56,14 @@ function JournalForm({ onSubmit }) {
   return (
     <form className={styles.journalForm} onSubmit={addJournalItem}>
       <div className={styles.formRow}>
-        <input
+        <Input
           type="text"
+          isValid={isValid.title}
           value={values.title}
           onChange={onChange}
           ref={titleRef}
           name="title"
           placeholder="Title"
-          className={classnames(styles.input, {
-            [styles.invalid]: !formState.isValid.title,
-          })}
         />
       </div>
       <div className={styles.formRow}>
@@ -72,17 +71,15 @@ function JournalForm({ onSubmit }) {
           <img src="/calendar.svg" alt="Calendar" />
           <span>Date</span>
         </label>
-        <input
+        <Input
           type="date"
+          isValid={isValid.date}
           value={values.date}
           onChange={onChange}
           ref={dateRef}
           id="date"
           name="date"
           placeholder="Date"
-          className={classnames(styles.input, {
-            [styles.invalid]: !formState.isValid.date,
-          })}
         />
       </div>
       <div className={styles.formRow}>
@@ -90,14 +87,14 @@ function JournalForm({ onSubmit }) {
           <img src="/folder.svg" alt="Tag" />
           <span>Tag</span>
         </label>
-        <input
+        <Input
           type="text"
+          isValid={isValid.tag}
           value={values.tag}
           onChange={onChange}
           id="tag"
           name="tag"
           placeholder="Tag"
-          className={classnames(styles.input)}
         />
       </div>
       <textarea

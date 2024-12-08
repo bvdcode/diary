@@ -3,14 +3,14 @@ import styles from "./Input.module.css";
 import cn from "classnames";
 
 const Input = forwardRef(function Input(
-  { isValid, appearence = "text", className, ...props },
+  { isValid = true, appearence = "text", className, ...props },
   ref
 ) {
   return (
     <input
       ref={ref}
       className={cn(className, {
-        [styles.invalid]: isValid,
+        [styles.invalid]: !isValid,
         [styles.inputTitle]: appearence == "title",
         [styles.input]: appearence == "text",
       })}
