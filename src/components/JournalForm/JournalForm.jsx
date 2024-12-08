@@ -6,29 +6,28 @@ import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 
 function JournalForm({ onSubmit }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
-  const { isValid, isFormValid } = formState;
+  const { isFormValid, values } = formState;
 
   useEffect(() => {
     if (!isFormValid) {
       const timeout = setTimeout(() => {
-        console.log("Resetting validation");
-        dispatchForm({ type: "RESET_VALIDATION" });
+        dispatchForm({ type: "RESET" });
       }, 2000);
       return () => clearTimeout(timeout);
     }
   }, [isFormValid]);
+
+  useEffect(() => {
+    if (isFormValid) {
+      onSubmit(values);
+    }
+  }, [isFormValid, values, onSubmit]);
 
   const onFormSubmitted = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formProps = Object.fromEntries(formData);
     dispatchForm({ type: "SUBMIT", payload: formProps });
-    if (!isFormValid) {
-      return;
-    }
-    formProps.date = new Date(formProps.date);
-    onSubmit(formProps);
-    event.target.reset();
   };
 
   return (
@@ -39,9 +38,8 @@ function JournalForm({ onSubmit }) {
           name="title"
           placeholder="Title"
           className={classnames(styles.input, {
-            [styles.invalid]: !isValid.title,
+            [styles.invalid]: !formState.isValid.title,
           })}
-          required
         />
       </div>
       <div className={styles.formRow}>
@@ -55,10 +53,9 @@ function JournalForm({ onSubmit }) {
           name="date"
           placeholder="Date"
           className={classnames(styles.input, {
-            [styles.invalid]: !isValid.date,
+            [styles.invalid]: !formState.isValid.date,
           })}
           defaultValue={new Date().toISOString().split("T")[0]}
-          required
         />
       </div>
       <div className={styles.formRow}>
@@ -71,22 +68,17 @@ function JournalForm({ onSubmit }) {
           id="tag"
           name="tag"
           placeholder="Tag"
-          className={classnames(styles.input, {
-            [styles.invalid]: !isValid.tag,
-          })}
-          required
+          className={classnames(styles.input)}
         />
       </div>
       <textarea
         name="text"
-        placeholder={JSON.stringify(formState)}
-        // placeholder="What's on your mind?"
+        placeholder="What's on your mind?"
         cols="30"
         rows="10"
         className={classnames(styles.input, {
-          [styles.invalid]: !isValid.text,
+          [styles.invalid]: !formState.isValid.text,
         })}
-        required
       ></textarea>
       <Button type="submit">Save</Button>
     </form>
