@@ -6,35 +6,45 @@ import { INITIAL_STATE, formReducer } from "./JournalForm.state";
 
 function JournalForm({ onSubmit }) {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
-  const { isFormValid, values } = formState;
+  const { isFormValid, isValid, values } = formState;
 
   useEffect(() => {
-    if (!isFormValid) {
-      const timeout = setTimeout(() => {
-        dispatchForm({ type: "RESET" });
-      }, 2000);
-      return () => clearTimeout(timeout);
+    let timerId;
+    if (!isValid.date || !isValid.post || !isValid.title) {
+      timerId = setTimeout(() => {
+        dispatchForm({ type: "RESET_VALIDITY" });
+      }, 700);
     }
-  }, [isFormValid]);
+    return () => clearTimeout(timerId);
+  }, [isValid]);
 
   useEffect(() => {
     if (isFormValid) {
       onSubmit(values);
+      dispatchForm({ type: "CLEAR" });
     }
   }, [isFormValid, values, onSubmit]);
 
-  const onFormSubmitted = (event) => {
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    dispatchForm({
+      type: "SET_VALUE",
+      payload: { [name]: value },
+    });
+  };
+
+  const addJournalItem = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const formProps = Object.fromEntries(formData);
-    dispatchForm({ type: "SUBMIT", payload: formProps });
+    dispatchForm({ type: "SUBMIT" });
   };
 
   return (
-    <form className={styles.journalForm} onSubmit={onFormSubmitted}>
+    <form className={styles.journalForm} onSubmit={addJournalItem}>
       <div className={styles.formRow}>
         <input
           type="text"
+          value={values.title}
+          onChange={onChange}
           name="title"
           placeholder="Title"
           className={classnames(styles.input, {
@@ -49,13 +59,14 @@ function JournalForm({ onSubmit }) {
         </label>
         <input
           type="date"
+          value={values.date}
+          onChange={onChange}
           id="date"
           name="date"
           placeholder="Date"
           className={classnames(styles.input, {
             [styles.invalid]: !formState.isValid.date,
           })}
-          defaultValue={new Date().toISOString().split("T")[0]}
         />
       </div>
       <div className={styles.formRow}>
@@ -65,6 +76,8 @@ function JournalForm({ onSubmit }) {
         </label>
         <input
           type="text"
+          value={values.tag}
+          onChange={onChange}
           id="tag"
           name="tag"
           placeholder="Tag"
@@ -73,6 +86,8 @@ function JournalForm({ onSubmit }) {
       </div>
       <textarea
         name="text"
+        value={values.text}
+        onChange={onChange}
         placeholder="What's on your mind?"
         cols="30"
         rows="10"

@@ -5,31 +5,47 @@ export const INITIAL_STATE = {
     date: true,
   },
   values: {
-    text: undefined,
-    title: undefined,
-    date: undefined,
+    text: "",
+    title: "",
+    date: new Date().toISOString().split("T")[0],
+    tag: "",
   },
   isFormValid: false,
 };
 
 export function formReducer(state, action) {
   switch (action.type) {
-    case "RESET":
+    case "SET_VALUE":
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          ...action.payload,
+        },
+      };
+
+    case "CLEAR":
+      return {
+        ...state,
+        values: INITIAL_STATE.values,
+        isFormValid: false,
+      };
+
+    case "RESET_VALIDITY":
       return {
         ...state,
         isValid: INITIAL_STATE.isValid,
-        isFormValid: true,
       };
+
     case "SUBMIT": {
-      const isTitleValid = action.payload.title.trim().length > 0;
-      const isDateValid = Date.parse(action.payload.date) > 0;
-      const isTextValid = action.payload.text.trim().length > 0;
+      const isTitleValid = state.values.title.trim().length > 0;
+      const isDateValid =
+        new Date(state.values.date) instanceof Date &&
+        !isNaN(new Date(state.values.date));
+      const isTextValid = state.values.text.trim().length > 0;
       const isFormValid = isTitleValid && isDateValid && isTextValid;
-      if (isDateValid) {
-        action.payload.date = new Date(action.payload.date);
-      }
       return {
-        values: action.payload,
+        ...state,
         isValid: {
           title: isTitleValid,
           date: isDateValid,

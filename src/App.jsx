@@ -22,10 +22,11 @@ function App() {
   }, []);
 
   const addItem = async (item) => {
+    console.log("data submitted :>> ", item);
     item.id = items.length > 0 ? Math.max(...items.map((i) => i.id)) + 1 : 1;
-    const newItems = [...items, item];
-    setItems(newItems);
-    await RemoteApi.saveData(newItems);
+    // const newItems = [...items, item];
+    // setItems(newItems);
+    //await RemoteApi.saveData(items);
   };
 
   return (
