@@ -1,7 +1,10 @@
 import "./JournalItem.css";
 
 function JournalItem({ title, date, text }) {
-  const dateStr = new Date(date).toLocaleDateString();
+  const dateStr = // if its a date object
+    date instanceof Date
+      ? date.toLocaleDateString()
+      : new Date(date).toLocaleDateString();
   return (
     <>
       <h2 className="journal-item__header">{title}</h2>
